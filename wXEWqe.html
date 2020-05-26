@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+
+  <meta charset=&quot;UTF-8&quot;>
+  
+<link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+<meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+<link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+<link rel=&quot;mask-icon&quot; type=&quot;&quot; href=&quot;https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg&quot; color=&quot;#111&quot; />
+
+
+  <title>CodePen - Materialize Expandable Search box</title>
+  <meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;>
+
+<!-- COMMON TAGS -->
+<meta charset=&quot;utf-8&quot;>
+<title>Materialize Expandable Search Box</title>
+<!-- Search Engine -->
+<meta name=&quot;description&quot; content=&quot;A custom search box that is similar to Googles.&quot;>
+<meta name=&quot;image&quot; content=&quot;https://s3-us-west-2.amazonaws.com/i.cdpn.io/2045302.XYgwmg.small.d3036163-7fb3-43e9-851f-f457bcea873d.png&quot;>
+<!-- Schema.org for Google -->
+<meta itemprop=&quot;name&quot; content=&quot;Materialize Expandable Search Box&quot;>
+<meta itemprop=&quot;description&quot; content=&quot;A custom search box that is similar to Googles.&quot;>
+<meta itemprop=&quot;image&quot; content=&quot;https://s3-us-west-2.amazonaws.com/i.cdpn.io/2045302.XYgwmg.small.d3036163-7fb3-43e9-851f-f457bcea873d.png&quot;>
+<!-- Open Graph general (Facebook, Pinterest &amp; Google+) -->
+<meta name=&quot;og:title&quot; content=&quot;Materialize Expandable Search Box&quot;>
+<meta name=&quot;og:description&quot; content=&quot;A custom search box that is similar to Googles.&quot;>
+<meta name=&quot;og:type&quot; content=&quot;website&quot;>
+
+  
+  <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css&quot;>
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.css'>
+  
+
+
+
+
+<style>
+
+// Delay Button display for effect
+document.addEventListener("DOMContentLoaded", function() {
+  let box = document.getElementById("scale");
+  setTimeout(function() {
+    box.classList.add("scale-in");
+  }, 500);
+});
+
+/* hide when expanded*/
+document.querySelector(".search-field").addEventListener("focus", function() {
+  let hidden = document.querySelectorAll(".search-hide");
+
+  for (let i = 0; i < hidden.length; ++i) {
+    hidden[i].style.display = "none";
+  }
+});
+
+/* show when expanded*/
+document
+  .querySelector(".search-field")
+  .addEventListener("focusout", function() {
+    let hidden = document.querySelectorAll(".search-hide");
+    for (let i = 0; i < hidden.length; ++i) {
+      hidden[i].style.display = "block";
+    }
+  });
+
+
+
+
+// Event listener for keypress in search box/open
+document.getElementById('search-input').addEventListener('keyup', searchEngine);
+document.getElementById('search-input').addEventListener('focus', searchEngine);
+
+  
+  // Local Search Engine *Basic
+function searchEngine(e){
+  
+  let input = document.getElementById('search-input');
+  let html = '';
+  let matchingResults = [];
+  let heading = document.querySelector('.search-heading');
+  
+//   Find Matching Results
+  if(input.value === ''){
+    
+    searchResults.forEach(function(obj){
+      heading.textContent = 'Most Visited';
+      
+      if(obj.frequent === true){
+        matchingResults.push(obj);
+      }
+    })
+  } else {
+    
+    heading.textContent = 'Search Results';
+    searchResults.forEach(function(obj){
+      if(obj.title.toUpperCase().includes(input.value.toUpperCase())){
+        matchingResults.push(obj);
+      }
+    })
+  }
+  
+
+
+  if(matchingResults.length > 0){
+
+    matchingResults.forEach(function(el){
+      html += `<li><a class="grey-text" href="${el.link}">${boldString(el.title, input.value)}</a></li>`
+    })
+    document.querySelector('.popup-list').innerHTML = html;
+  } else{
+    html = `<li>There are no suggestions for your query.</li>`
+    document.querySelector('.popup-list').innerHTML = html;
+  }
+
+}
+
+
+
+
+// Stored search results
+let searchResults = [
+  {
+    title: 'Apple test',
+    description: 'This is just a test',
+    link: '#test1',
+    frequent: false
+  },
+  {
+    title: 'Tea cup',
+    description: 'Something else to test',
+    link: '#test2',
+    frequent: false
+  },
+  {
+    title: 'Testing using Carrot',
+    description: 'Something else to test',
+    link: '#test3',
+    frequent: false
+  },
+  {
+    title: 'Link 1',
+    description: 'Something else to test, just a link name.',
+    link: '#test4',
+    frequent: false
+  },
+  {
+    title: 'Stack Overflow',
+    description: 'Something else to test, just another link name.',
+    link: '#test5',
+    frequent: false
+  },
+  {
+    title: 'Google',
+    description: 'Something else to test, just another link name.',
+    link: '#googletest',
+    frequent: true
+  },
+  {
+    title: 'Apple',
+    description: 'Something else to test, just another link name.',
+    link: '#appletest',
+    frequent: true
+  },
+  {
+    title: 'Microsoft',
+    description: 'Something else to test, just another link name.',
+    link: '#Microsofttest',
+    frequent: true
+  },
+  {
+    title: 'Github',
+    description: 'Something else to test, just another link name.',
+    link: '#githubtest',
+    frequent: true
+  }
+]
+
+// Help bold matching results
+function boldString(str, find){
+  var re = new RegExp(find, 'i');
+  find = re.exec(str);
+  return str.replace(re, '<b>'+find+'</b>');
+}
+
+
+
+</style>
+
+
+
+
+<style>
+
+
+
+
+
+
+
+
+
+/* html { margin-left: calc(100vw - 100%); } */
+
+nav form {
+  position: relative;
+  height: 100%;
+  background: inherit;
+}
+.nav-wrapper{
+  background: inherit;
+  
+}
+
+.search-close-icon{
+  display: none!important;
+  position: absolute;
+  top: 0;
+  left: 100%!important;
+  padding-left: 0px;
+  color: rgba(0, 0, 0, 0.54);
+  transition: color .2s;
+  cursor: pointer;
+}
+
+
+.my-grey{
+  background: #f7f7f7;
+}
+
+input.search-field {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.54);
+  border-radius: 2px;
+  border: 0;
+  height: 36px;
+  padding: 8px 8px 8px 60px;
+  width: 200px;
+  background: #f7f7f7;
+  transition: background 0.2s, width .2s;
+}
+input.search-field:hover {
+  background: #ebebeb;
+}
+.searchbox {
+  position: relative;
+}
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(0, 0, 0, 0.54);
+}
+input.search-field:focus {
+  outline: none;
+  width: 500px;
+  color: #212121;
+}
+input.search-field:focus:hover {
+  background: #f7f7f7;
+}
+.search-icon {
+  position: absolute;
+  top: 0;
+  padding-left: 20px;
+  color: rgba(0, 0, 0, 0.54);
+}
+.search-content {
+  color: #303c42;
+  width: 90%;
+  margin: auto;
+  height: auto;
+  padding: 8px 10px;
+}
+.search-heading {
+  color: #757575;
+  display: block;
+  font-size: 12px;
+  line-height: 30px;
+}
+input.search-field ~ .search-popup {
+  overflow: hidden;
+  left: 0px;
+  min-height: 50px;
+  max-height: 700px;
+  width: 200px;
+  top: -450px; 
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: width .2s, top .2s ease-in-out;
+  border-radius: 2px;
+  background-color: #fff;
+}
+input.search-field:focus ~ .search-popup {
+  width: 500px;
+  top: 50px;
+}
+nav ul.popup-list a:hover {
+  background-color: initial;
+}
+nav ul.popup-list li {
+  float: none;
+}
+nav ul.popup-list li a {
+  line-height: 30px;
+  padding: 0;
+  font-size: 12px;
+  color: #212121 !important;
+}
+nav ul.popup-list li a:hover {
+  background-color: #f7f7f7;
+}
+
+p {
+  font-size: 1.3rem;
+}
+
+.top-margin {
+  margin-top: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  
+  nav form {
+/*     left: calc(90vw - 100%); */
+  }
+  
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: transparent;
+  }
+
+  input.search-field {
+    width: 1px;
+    margin-right: 0px;
+    padding: 8px 25px;
+  }
+  input.search-field ~ .search-popup {
+    width: 1px;
+    margin-right: 0px;
+    padding: 8px 25px;
+  }
+
+  .search-icon {
+    top: 0;
+    padding-left: 15px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  input.search-field:focus {
+    margin-right: 0px;
+    width: 100vw;
+    padding: 8px 8px 8px 50px;
+  }
+
+  input.search-field:focus ~ .search-popup {
+    width: 100vw;
+  }
+
+  .search-content {
+    width: 100%;
+    padding: 8px 8px;
+  }
+
+  nav .nav-wrapper {
+    margin-right: 0px;
+  }
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage(&quot;resize&quot;, &quot;*&quot;);
+  }
+</script>
+
+
+</head>
+
+<body translate=&quot;no&quot; >
+  <link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;>
+
+<div id=&quot;container&quot;>
+  <nav class=&quot;nav-extended white pushpin z-depth-3&quot;>
+    <div class=&quot;nav-wrapper container&quot;>
+      <a href=&quot;#&quot; class=&quot;brand-logo blue-text left truncate&quot;>Expandable Search Box</a>
+      
+      <form action=&quot;&quot; class=&quot;browser-default right&quot;>
+        <input id=&quot;search-input&quot; placeholder=&quot;Search&quot; type=&quot;text&quot; class=&quot;browser-default search-field&quot; name=&quot;q&quot; value=&quot;&quot; autocomplete=&quot;off&quot; aria-label=&quot;Search box&quot;>
+        <label for=&quot;search-input&quot;><i class=&quot;material-icons search-icon&quot;>search</i></label> 
+        <i class=&quot;material-icons search-close-icon&quot;>cancel</i>
+        <div class=&quot;search-popup&quot;>
+          <div class=&quot;search-content&quot;>
+            <label class=&quot;search-heading&quot;>Most Visited</label>
+            <ul class=&quot;popup-list&quot;>
+              <li class=&quot;&quot;><a class=&quot;grey-text&quot; href=&quot;#&quot;>Google</a></li>
+              <li class=&quot;&quot;><a class=&quot;grey-text&quot; href=&quot;#&quot;>Apple</a></li><li class=&quot;&quot;><a class=&quot;grey-text&quot; href=&quot;#&quot;>Microsoft</a></li><li class=&quot;&quot;><a class=&quot;grey-text&quot; href=&quot;#&quot;>Github</a></li>
+            </ul>
+          </div>
+        </div>
+      </form>
+
+    </div>
+      <div class=&quot;my-grey&quot;>
+      <div class=&quot;nav-content container&quot;>
+        <ul class=&quot;tabs tabs-transparent&quot;>
+          <li id=&quot;scale&quot; class=&quot;nav-btn top-margin scale-transition scale-out &quot;><a  class=&quot;waves-effect waves-light btn blue search-hide&quot; href=&quot;#&quot;>this will hide!</a></li>
+        </ul>
+    </div>
+    
+  </div>
+  
+  </nav>
+  
+  <main>
+    <div class=&quot;container&quot;>
+      <div class=&quot;section&quot;></div>
+      <div class=&quot;section&quot;>
+        <div class=&quot;row&quot;>
+          <div class=&quot;col l6 m8 s12&quot;>
+        <h2 class=&quot;grey-text text-darken-1&quot;>Works similar to a 
+          <span class=&quot;blue-text&quot;>G</span><span class=&quot;red-text&quot;>o</span><span class=&quot;amber-text&quot;>o</span><span class=&quot;blue-text&quot;>g</span><span class=&quot;green-text&quot;>l</span><span class=&quot;red-text&quot;>e</span>
+
+          navbar search box!</h2>
+            </div>
+          <div class=&quot;col s12&quot;>
+        <p class=&quot;grey-text text-darken-2&quot;>Get focus on the search box and watch it expand.
+            <br>
+          Also try to resize page, the search box will shrink down to a small icon.
+          <br>
+          Add the class 'search-hide' to any element, and that element will be hidden when the search is in focus.
+          
+            </p>
+            </div>
+          </div>
+      </div>
+    </div>
+  </main>
+    <script src='js.js'></script>
+
+  <script src='js.js'></script>
+  
+      <script id=&quot;rendered-js&quot; >
+// Delay Button display for effect
+document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+  let box = document.getElementById(&quot;scale&quot;);
+  setTimeout(function () {
+    box.classList.add(&quot;scale-in&quot;);
+  }, 500);
+});
+
+/* hide when expanded*/
+document.querySelector(&quot;.search-field&quot;).addEventListener(&quot;focus&quot;, function () {
+  let hidden = document.querySelectorAll(&quot;.search-hide&quot;);
+
+  for (let i = 0; i < hidden.length; ++i) {if (window.CP.shouldStopExecution(0)) break;
+    hidden[i].style.display = &quot;none&quot;;
+  }window.CP.exitedLoop(0);
+});
+
+/* show when expanded*/
+document.
+querySelector(&quot;.search-field&quot;).
+addEventListener(&quot;focusout&quot;, function () {
+  let hidden = document.querySelectorAll(&quot;.search-hide&quot;);
+  for (let i = 0; i < hidden.length; ++i) {if (window.CP.shouldStopExecution(1)) break;
+    hidden[i].style.display = &quot;block&quot;;
+  }window.CP.exitedLoop(1);
+});
+
+
+
+
+// Event listener for keypress in search box/open
+document.getElementById('search-input').addEventListener('keyup', searchEngine);
+document.getElementById('search-input').addEventListener('focus', searchEngine);
+
+
+// Local Search Engine *Basic
+function searchEngine(e) {
+
+  let input = document.getElementById('search-input');
+  let html = '';
+  let matchingResults = [];
+  let heading = document.querySelector('.search-heading');
+
+  //   Find Matching Results
+  if (input.value === '') {
+
+    searchResults.forEach(function (obj) {
+      heading.textContent = 'Most Visited';
+
+      if (obj.frequent === true) {
+        matchingResults.push(obj);
+      }
+    });
+  } else {
+
+    heading.textContent = 'Search Results';
+    searchResults.forEach(function (obj) {
+      if (obj.title.toUpperCase().includes(input.value.toUpperCase())) {
+        matchingResults.push(obj);
+      }
+    });
+  }
+
+
+
+  if (matchingResults.length > 0) {
+
+    matchingResults.forEach(function (el) {
+      html += `<li><a class=&quot;grey-text&quot; href=&quot;${el.link}&quot;>${boldString(el.title, input.value)}</a></li>`;
+    });
+    document.querySelector('.popup-list').innerHTML = html;
+  } else {
+    html = `<li>There are no suggestions for your query.</li>`;
+    document.querySelector('.popup-list').innerHTML = html;
+  }
+
+}
+
+
+
+
+// Stored search results
+let searchResults = [
+{
+  title: 'Apple test',
+  description: 'This is just a test',
+  link: '#test1',
+  frequent: false },
+
+{
+  title: 'Tea cup',
+  description: 'Something else to test',
+  link: '#test2',
+  frequent: false },
+
+{
+  title: 'Testing using Carrot',
+  description: 'Something else to test',
+  link: '#test3',
+  frequent: false },
+
+{
+  title: 'Link 1',
+  description: 'Something else to test, just a link name.',
+  link: '#test4',
+  frequent: false },
+
+{
+  title: 'Stack Overflow',
+  description: 'Something else to test, just another link name.',
+  link: '#test5',
+  frequent: false },
+
+{
+  title: 'Google',
+  description: 'Something else to test, just another link name.',
+  link: '#googletest',
+  frequent: true },
+
+{
+  title: 'Apple',
+  description: 'Something else to test, just another link name.',
+  link: '#appletest',
+  frequent: true },
+
+{
+  title: 'Microsoft',
+  description: 'Something else to test, just another link name.',
+  link: '#Microsofttest',
+  frequent: true },
+
+{
+  title: 'Github',
+  description: 'Something else to test, just another link name.',
+  link: '#githubtest',
+  frequent: true }];
+
+
+
+// Help bold matching results
+function boldString(str, find) {
+  var re = new RegExp(find, 'i');
+  find = re.exec(str);
+  return str.replace(re, '<b>' + find + '</b>');
+}
+//# sourceURL=pen.js
+    </script>
+
+  
+  
+
+</body>
+
+</html>
+ 
